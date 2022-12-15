@@ -1,14 +1,16 @@
 class Mob:
-    def __init__(self, HP, MaxHP, DMG, Speed, EXP_Drop, ID):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP_Drop, ID):
         self.HP = HP
+        self.Name = Name
         self.MaxHP = MaxHP
         self.DMG = DMG
         self.Speed = Speed
         EXP_Drop = EXP_Drop
         self.ID = ID
 class Player:
-    def __init__(self, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Heal, Run_Chance):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Heal, Run_Chance):
         self.HP = HP
+        self.Name = Name
         self.MaxHP = MaxHP
         self.DMG = DMG
         self.Speed = Speed

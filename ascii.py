@@ -215,25 +215,3 @@ gromp_ascii = """                             .-----.
         __/  .. \ \ ` ) \                     \.' .. \__
  .-._.-'     '"  ) .-'   `.                   (  '"     `-._.--.
 (_________.-====' / .' /\_)`--..__________..-- `====-. _________)"""
-def death():
-    clear()
-    print(heal_ascii)
-    time.sleep(1)
-    clear()
-    print(damage_ascii)
-    time.sleep(1)
-    clear()
-def spawn_dragon():
-    while True:
-        print(dragon_frame1)
-        time.sleep(0.5)
-        clear()
-        print(dragon_frame2)
-        time.sleep(0.5)
-        clear()
-death()
-time.sleep(5)
-print(gargoyle_ascii)
-time.sleep(0.7)
-print(dragon_ascii )
-print(gromp_ascii)

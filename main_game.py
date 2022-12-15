@@ -2,9 +2,7 @@ import time
 import random
 from ascii import *
 from main import *
-exec("C:\Users\Elev\Documents\Dungeon Project\main.py")
-exec("Dungeon_Python/main.py")
-area = 0
+area = 1
 def mob_spawn():
     if area == 1:
         random_spawn = random.randint(0,2)
@@ -22,7 +20,8 @@ def mob_spawn():
             if mob == mob_list_area_3[random_spawn]:
                 current_mob = mob
     return current_mob
-
+x = mob_spawn()
+print(x)
 def fight_dialogue():
     print("A battle has begun!")
     time.sleep(1)
@@ -32,7 +31,6 @@ def fight_dialogue():
     time.sleep(1)
 def fighting():
     fight_dialogue()
-    current_mob.HP -= player.damage
 
 
 # def fighting():
