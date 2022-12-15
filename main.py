@@ -39,9 +39,31 @@ Rapier = Weapon("Rapier", 3, 4, 25, 10, 0)
 #Tier 2
 Greatsword = Weapon("Greatsword", 10, 2, 32, -6, 0)
 
-Katana = Weapon("Katana", 5, 6, 30, 8, 0)
+Katana = Weapon("Katana", 6, 6, 30, 8, 0)
 
-Crucible_rapier = Weapon("Crucible Rapier", 5, 7, 30, 15, 1)
+Crucible_rapier = Weapon("Crucible Rapier", 5, 7, 30, 13, 1)
+
+#Tier 3
+Longbow = Weapon("Longbow",12, 2, 40, 5, 0)
+
+Spear = Weapon("Spear", 14, 2, 35, 4, 0)
+
+Axe = Weapon("Axe",13 ,4 ,45 ,6 ,4 )
+
+#Tier 4
+Halberd = Weapon("Halberd", 18, 1, 50, 7, 2)
+
+Leviathan = Weapon("Leviathan", 16, 3, 55, 8, 5)
+
+Blades_of_chaos= Weapon("Blades of Chaos", 15, 5, 55, 10, 4)
+
+#Tier 5 
+Excalibur = Weapon("Excalibur", 23, 4, 85, 14, 14)
+
+Mjölnir = Weapon("Mjönir", 28, 2, 80, 8, 8)
+
+Lightsaber = Weapon ("Lightsaber", 26, 3, 70, 16, 6)
+
 
 
 
