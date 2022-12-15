@@ -1,9 +1,11 @@
-class Mobs:
-    def __init__(self, HP, MaxHP, DMG, Speed):
+class Mob:
+    def __init__(self, HP, MaxHP, DMG, Speed, EXP_Drop, ID):
         self.HP = HP
         self.MaxHP = MaxHP
         self.DMG = DMG
         self.Speed = Speed
+        EXP_Drop = EXP_Drop
+        self.ID = ID
 class Player:
     def __init__(self, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Heal, Run_Chance):
         self.HP = HP
@@ -28,6 +30,13 @@ class Weapon:
         self.Durability = Durability
         self.Speed = Speed
         self.Lifesteal = Lifesteal
+
+#Player classes
+Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 5, 1)
+
+Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 7, 1)
+
+Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 3, 1)
 
 #Tier 1
 Zweihänder = Weapon("Zweihänder", 8, 2, 15, -4, 0)
@@ -65,5 +74,34 @@ Mjölnir = Weapon("Mjönir", 28, 2, 80, 8, 8)
 Lightsaber = Weapon ("Lightsaber", 26, 3, 70, 16, 6)
 
 
+#Area 1 
+Slime = Mob("Slime", 10, 10, 1, 2, 25, 1)
 
+Zombie = Mob("Zombie", 8, 8, 2, 2, 25, 2)
 
+Goblin = Mob("Goblin", 6, 6, 2, 2, 25, 3)
+
+#Area 2
+Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, 4)
+
+Spider = Mob("Spider", 40, 40, 5, 7, 25, 5)
+
+Wolf = Mob("Wolf", 30, 30, 8, 8, 25, 6)
+
+#Area 3
+Golem = Mob("Golem", 100, 100, 15, 1, 25, 7)
+
+Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, 8)
+
+Ogre = Mob("Ogre", 90, 90, 20, 7, 25, 9)
+
+#Bosses
+Gromp = Mob("Gromp", 70, 70, 10, 4, 0, 10)
+
+Dragon = Mob("Dragon", 240, 240, 30, 10, 0, 11)
+
+mob_list_area_1 = [Slime, Zombie, Goblin]
+
+mob_list_area_2 = [Skeleton, Spider, Wolf]
+
+mob_list_area_3 = [Golem, Gargoyle, Ogre]
