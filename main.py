@@ -97,6 +97,8 @@ Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, 8)
 
 Ogre = Mob("Ogre", 90, 90, 20, 7, 25, 9)
 
+Snake = Mob("Snake", 5, 90 ,2 , 7, 25, 9)
+
 #Bosses
 Gromp = Mob("Gromp", 70, 70, 10, 4, 0, 10)
 
@@ -106,4 +108,4 @@ mob_list_area_1 = [Slime, Zombie, Goblin]
 
 mob_list_area_2 = [Skeleton, Spider, Wolf]
 
-mob_list_area_3 = [Golem, Gargoyle, Ogre]
+mob_list_area_3 = [Golem, Gargoyle, Ogre, Snake]
