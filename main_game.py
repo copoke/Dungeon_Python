@@ -28,4 +28,4 @@ def fight_dialogue():
 def fighting():
     fight_dialogue()
 
-fight_dialogue()
+fighting()
