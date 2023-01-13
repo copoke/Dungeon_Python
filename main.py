@@ -8,7 +8,7 @@ class Mob:
         EXP_Drop = EXP_Drop
         self.ID = ID
 class Player:
-    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Heal, Run_Chance):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Heal):
         self.HP = HP
         self.Name = Name
         self.MaxHP = MaxHP
@@ -17,7 +17,6 @@ class Player:
         self.EXP = EXP
         self.MaxExp = MaxEXP
         self.Heal = Heal
-        self.Run_chance = Run_Chance
 class Armor:
     def __init__(self, Durability, Def, Weight, HP):
         self.Durability = Durability
@@ -34,11 +33,11 @@ class Weapon:
         self.Lifesteal = Lifesteal
 
 #Player classes
-Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 5, 1)
+Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 5)
 
-Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 7, 1)
+Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 7)
 
-Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 3, 1)
+Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 3)
 
 #Tier 1
 Zweihänder = Weapon("Zweihänder", 8, 2, 15, -4, 0)
