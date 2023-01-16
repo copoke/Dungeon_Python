@@ -29,8 +29,24 @@ clear()
 
 def dialogue_spacing():
     print("----------------------------")
+def EXP():
+    character.EXP += spawned_mob.EXP_Drop
+    print(f"You got {spawned_mob.EXP_Drop} exp")
+    if character.EXP >= character.MaxExp:
+        character.Level += 1
+        print("You leveled up!")    
+    print(f"You now have {character.EXP}/{character.MaxExp} exp.")
+
 def mob_died():
-    
+    time.sleep(1)
+    print(f"The {spawned_mob.Name} died")
+    time.sleep(2)
+    EXP()
+    print(f"You got {spawned_mob.Drop} and {spawned_mob.Coin_Drop} coins")
+    print("\nPress enter to procced")
+    input("")
+    mob_spawn()
+
 def mob_spawn_randomizer(moblist):
         global spawned_mob
         random_spawn = random.randint(0,len(moblist) - 1)
@@ -110,35 +126,42 @@ def hit():
             sys.exit
         else:
             spawned_mob.HP -= character.DMG
-            print(f"You've done {character.DMG} damage to {spawned_mob.Name}")
+            print(f"You've done {character.DMG} damage to {spawned_mob.Name}, it now has {spawned_mob.HP}/{spawned_mob.MaxHP} Health")
             time.sleep(1)
+        if spawned_mob.HP <= death:
+            clear()
+            mob_died()
     elif character.Speed >= spawned_mob.Speed:
         spawned_mob.HP -= character.DMG
         time.sleep(1)
+        if spawned_mob.HP <= death:
+            spawned_mob.HP = 0
+        print(f"You've done {character.DMG} damage to {spawned_mob.Name}, it now has {spawned_mob.HP}/{spawned_mob.MaxHP} Health")
+        time.sleep(1)
         if spawned_mob.HP > 0:
-            print(f"You've done {character.DMG} damage to {spawned_mob.Name}, it now has {spawned_mob.HP}/{spawned_mob.MaxHP}")
-            time.sleep(1)
             character.HP -= spawned_mob.DMG
-            print(f"{spawned_mob.Name} hit you for {spawned_mob.DMG} damage, you now have {character.HP}/{character.MaxHP}")
+            print(f"{spawned_mob.Name} hit you for {spawned_mob.DMG} damage, you now have {character.HP}/{character.MaxHP} Health")
             time.sleep(2)
             if character.HP <= death:
                 time.sleep(1)
                 print("You've been killed.")
                 sys.exit
         else:
-            print(f"The {spawned_mob.Name} died")
-            time.sleep(2) 
-            print(f"You got {spawned_mob.EXP_Drop}")
-
+            clear()
+            mob_died()
+def inventory():
+    for item in mob_drop_list:
+        if item > 0:
+            print(f"{item}")
 def fighting():
     fight_intro()
     while character.HP > 0 and spawned_mob.HP > 0:
         fight_menu()
-
-fighting()
-
-
+while True:
+    fighting()
 
 
 
-# Fixa XP, inventory, mob drops, run, 
+
+
+#inventory, mob drops

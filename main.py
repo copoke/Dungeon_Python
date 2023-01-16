@@ -1,11 +1,13 @@
 class Mob:
-    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP_Drop, Drop):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP_Drop, Drop, Coin_Drop):
         self.HP = HP
         self.Name = Name
         self.MaxHP = MaxHP
         self.DMG = DMG
         self.Speed = Speed
-        EXP_Drop = EXP_Drop
+        self.EXP_Drop = EXP_Drop
+        self.Drop = Drop
+        self.Coin_Drop = Coin_Drop
 class Player:
     def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Level):
         self.HP = HP
@@ -74,35 +76,37 @@ Lightsaber = Weapon ("Lightsaber", 26, 3, 70, 16, 6)
 
 
 #Area 1 
-Slime = Mob("Slime", 10, 10, 1, 2, 25, "Gel")
+Slime = Mob("Slime", 10, 10, 1, 2, 25, "Gel", 2)
 
-Zombie = Mob("Zombie", 8, 8, 2, 2, 25, "Rotten Flesh")
+Zombie = Mob("Zombie", 8, 8, 2, 2, 25, "Rotten Flesh", 3)
 
-Goblin = Mob("Goblin", 6, 6, 2, 2, 25, "Goblin Ears")
+Goblin = Mob("Goblin", 6, 6, 2, 2, 25, "Goblin Skull", 4)
 
 #Area 2
-Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, "Bones")
+Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, "Bones", 6)
 
-Spider = Mob("Spider", 40, 40, 5, 7, 25, "Spider Eyes")
+Spider = Mob("Spider", 40, 40, 5, 7, 25, "Spider Eyes", 5)
 
-Wolf = Mob("Wolf", 30, 30, 8, 8, 25, "Fur")
+Wolf = Mob("Wolf", 30, 30, 8, 8, 25, "Fur", 7)
 
 #Area 3
-Golem = Mob("Golem", 100, 100, 15, 1, 25, "Magic Stone")
+Golem = Mob("Golem", 100, 100, 15, 1, 25, "Magic Stone", 8)
 
-Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, "Gargoyle Tooth")
+Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, "Gargoyle Tooth", 9)
 
-Ogre = Mob("Ogre", 90, 90, 20, 7, 25, "Broken Club")
+Ogre = Mob("Ogre", 90, 90, 20, 7, 25, "Broken Club", 12)
 
-Snake = Mob("Snake", 5, 90 ,2 , 7, 25, "Venom")
+Snake = Mob("Snake", 5, 90 ,2 , 7, 25, "Venom", 10)
 
 #Bosses
-Gromp = Mob("Gromp", 70, 70, 10, 4, 0, "Magical Mushroom")
+Gromp = Mob("Gromp", 70, 70, 10, 4, 0, "Magical Mushroom", 20)
 
-Dragon = Mob("Dragon", 240, 240, 30, 10, 0, "Fire Breath")
+Dragon = Mob("Dragon", 240, 240, 30, 10, 0, "Fire Breath", 50)
 
 mob_list_area_1 = [Slime, Zombie, Goblin]
 
 mob_list_area_2 = [Skeleton, Spider, Wolf]
 
 mob_list_area_3 = [Golem, Gargoyle, Ogre, Snake]
+
+mob_drop_list = [Slime.Drop, Zombie.Drop, Goblin.Drop, Skeleton.Drop, Spider.Drop, Wolf.Drop, Golem.Drop, Gargoyle.Drop, Ogre.Drop, Snake.Drop, Gromp.Drop, Dragon.Drop]
