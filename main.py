@@ -1,14 +1,13 @@
 class Mob:
-    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP_Drop, ID):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP_Drop, Drop):
         self.HP = HP
         self.Name = Name
         self.MaxHP = MaxHP
         self.DMG = DMG
         self.Speed = Speed
         EXP_Drop = EXP_Drop
-        self.ID = ID
 class Player:
-    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Heal):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Level):
         self.HP = HP
         self.Name = Name
         self.MaxHP = MaxHP
@@ -16,7 +15,7 @@ class Player:
         self.Speed = Speed
         self.EXP = EXP
         self.MaxExp = MaxEXP
-        self.Heal = Heal
+        self.Level = Level
 class Armor:
     def __init__(self, Durability, Def, Weight, HP):
         self.Durability = Durability
@@ -33,12 +32,11 @@ class Weapon:
         self.Lifesteal = Lifesteal
 
 #Player classes
-Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 5)
+Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 1)
 
-Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 7)
+Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 1)
 
-Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 3)
-
+Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 1)
 #Tier 1
 Zweihänder = Weapon("Zweihänder", 8, 2, 15, -4, 0)
 
@@ -76,32 +74,32 @@ Lightsaber = Weapon ("Lightsaber", 26, 3, 70, 16, 6)
 
 
 #Area 1 
-Slime = Mob("Slime", 10, 10, 1, 2, 25, 1)
+Slime = Mob("Slime", 10, 10, 1, 2, 25, "Gel")
 
-Zombie = Mob("Zombie", 8, 8, 2, 2, 25, 2)
+Zombie = Mob("Zombie", 8, 8, 2, 2, 25, "Rotten Flesh")
 
-Goblin = Mob("Goblin", 6, 6, 2, 2, 25, 3)
+Goblin = Mob("Goblin", 6, 6, 2, 2, 25, "Goblin Ears")
 
 #Area 2
-Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, 4)
+Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, "Bones")
 
-Spider = Mob("Spider", 40, 40, 5, 7, 25, 5)
+Spider = Mob("Spider", 40, 40, 5, 7, 25, "Spider Eyes")
 
-Wolf = Mob("Wolf", 30, 30, 8, 8, 25, 6)
+Wolf = Mob("Wolf", 30, 30, 8, 8, 25, "Fur")
 
 #Area 3
-Golem = Mob("Golem", 100, 100, 15, 1, 25, 7)
+Golem = Mob("Golem", 100, 100, 15, 1, 25, "Magic Stone")
 
-Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, 8)
+Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, "Gargoyle Tooth")
 
-Ogre = Mob("Ogre", 90, 90, 20, 7, 25, 9)
+Ogre = Mob("Ogre", 90, 90, 20, 7, 25, "Broken Club")
 
-Snake = Mob("Snake", 5, 90 ,2 , 7, 25, 9)
+Snake = Mob("Snake", 5, 90 ,2 , 7, 25, "Venom")
 
 #Bosses
-Gromp = Mob("Gromp", 70, 70, 10, 4, 0, 10)
+Gromp = Mob("Gromp", 70, 70, 10, 4, 0, "Magical Mushroom")
 
-Dragon = Mob("Dragon", 240, 240, 30, 10, 0, 11)
+Dragon = Mob("Dragon", 240, 240, 30, 10, 0, "Fire Breath")
 
 mob_list_area_1 = [Slime, Zombie, Goblin]
 
