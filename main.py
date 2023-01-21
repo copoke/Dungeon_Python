@@ -9,7 +9,7 @@ class Mob:
         self.Drop = Drop
         self.Coin_Drop = Coin_Drop
 class Player:
-    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Level):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Level, Coins):
         self.HP = HP
         self.Name = Name
         self.MaxHP = MaxHP
@@ -18,6 +18,7 @@ class Player:
         self.EXP = EXP
         self.MaxExp = MaxEXP
         self.Level = Level
+        self.Coins = Coins
 class Armor:
     def __init__(self, Durability, Def, Weight, HP):
         self.Durability = Durability
@@ -34,11 +35,11 @@ class Weapon:
         self.Lifesteal = Lifesteal
 
 #Player classes
-Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 1)
+Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 1, 0)
 
-Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 1)
+Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 1, 0)
 
-Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 1)
+Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 1, 0)
 #Tier 1
 Zweihänder = Weapon("Zweihänder", 8, 2, 15, -4, 0)
 
@@ -83,9 +84,9 @@ Zombie = Mob("Zombie", 8, 8, 2, 2, 25, "Rotten Flesh", 3)
 Goblin = Mob("Goblin", 6, 6, 2, 2, 25, "Goblin Skull", 4)
 
 #Area 2
-Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, "Bones", 6)
+Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, "Bone", 6)
 
-Spider = Mob("Spider", 40, 40, 5, 7, 25, "Spider Eyes", 5)
+Spider = Mob("Spider", 40, 40, 5, 7, 25, "Spider Eye", 5)
 
 Wolf = Mob("Wolf", 30, 30, 8, 8, 25, "Fur", 7)
 
@@ -109,4 +110,6 @@ mob_list_area_2 = [Skeleton, Spider, Wolf]
 
 mob_list_area_3 = [Golem, Gargoyle, Ogre, Snake]
 
-item_list = [Slime.Drop, Zombie.Drop, Goblin.Drop, Skeleton.Drop, Spider.Drop, Wolf.Drop, Golem.Drop, Gargoyle.Drop, Ogre.Drop, Snake.Drop, Gromp.Drop, Dragon.Drop]
+plural_list  = [Goblin.Drop,  Skeleton.Drop, Spider.Drop, Ogre.Drop, Gromp.Drop, Golem.Drop]
+
+inventory_list = []
