@@ -26,7 +26,15 @@ def class_selection():
 character = class_selection()
 time.sleep(1)
 clear()
+def health_bar_calculaton(type):
+    max_dashes = 40
+    convertion = type.MaxHP / max_dashes   
+    total_lines =  int(type.HP/convertion)
+    hp_remaining = max_dashes - total_lines
 
+    line_string = "▆" * total_lines
+    line_string_health = " " * hp_remaining
+    print("|" + line_string + line_string_health + "|")
 def dialogue_spacing():
     print("----------------------------")
 def EXP():
@@ -36,7 +44,9 @@ def EXP():
         character.Level += 1
         print("You leveled up!")    
     print(f"You now have {character.EXP}/{character.MaxExp} exp.")
-
+def add_to_inventory(inventorylist):
+    inventorylist.append(spawned_mob.Drop, spawned_mob.Coin_Drop)
+    return inventorylist
 def mob_died():
     time.sleep(1)
     print(f"The {spawned_mob.Name} died")
@@ -45,8 +55,9 @@ def mob_died():
     print(f"You got {spawned_mob.Drop} and {spawned_mob.Coin_Drop} coins")
     print("\nPress enter to procced")
     input("")
+    inventory = add_to_inventory()
     mob_spawn()
-
+    return inventory
 def mob_spawn_randomizer(moblist):
         global spawned_mob
         random_spawn = random.randint(0,len(moblist) - 1)
@@ -70,17 +81,20 @@ def fight_intro():
     time.sleep(2)
     clear()
 def fight_menu():
+    inventory_list = []
     print(f"{spawned_mob.Name} has {spawned_mob.HP}/{spawned_mob.MaxHP} Health")
-    print(f"You have {character.HP}/{character.MaxHP} health")
+    health_bar_calculaton(spawned_mob)
+    print(f"You have {character.HP}/{character.MaxHP} Health")
+    health_bar_calculaton(character)
     dialogue_spacing()
     print("1.Fight? 2.Run? 3.Inventory? 4.Stats?")
     choosen_action = int(input(">"))
     if choosen_action == 1:
-        hit()
+        hit(inventory_list)
     elif choosen_action == 2:
         run()
     elif choosen_action == 3:
-        inventory()
+        inventory(inventory_list)
     elif choosen_action == 4:
         stats()
         print("\nPress enter to proceed" )
@@ -111,8 +125,10 @@ def run():
         print("You failed to run")
         character.HP -= spawned_mob.DMG
         if character.HP > 0:
+            time.sleep(1)
             print("Returning to battle")
-def hit():
+            time.sleep(1)
+def hit(inventorylist):
     death = 0
     if character.Speed < spawned_mob.Speed:
         character.HP -= spawned_mob.DMG
@@ -148,15 +164,24 @@ def hit():
                 sys.exit
         else:
             clear()
-            mob_died()
-def inventory():
-    for item in mob_drop_list:
-        if item > 0:
-            print(f"{item}")
+            mob_died(inventorylist)
 def fighting():
     fight_intro()
     while character.HP > 0 and spawned_mob.HP > 0:
         fight_menu()
+def inventory(inventorylist):
+    item_counter = 0
+    for item in item_list:
+        for owned_item in inventorylist:
+            if item == owned_item:
+                item_counter += 1
+        if item_counter == 0:
+            pass
+        else:
+            time.sleep(0.2)
+            print(f"{item_counter} {owned_item}")
+    print("Press enter to proceed")
+    input()
 while True:
     fighting()
 

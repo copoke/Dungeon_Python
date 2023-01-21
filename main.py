@@ -109,4 +109,4 @@ mob_list_area_2 = [Skeleton, Spider, Wolf]
 
 mob_list_area_3 = [Golem, Gargoyle, Ogre, Snake]
 
-mob_drop_list = [Slime.Drop, Zombie.Drop, Goblin.Drop, Skeleton.Drop, Spider.Drop, Wolf.Drop, Golem.Drop, Gargoyle.Drop, Ogre.Drop, Snake.Drop, Gromp.Drop, Dragon.Drop]
+item_list = [Slime.Drop, Zombie.Drop, Goblin.Drop, Skeleton.Drop, Spider.Drop, Wolf.Drop, Golem.Drop, Gargoyle.Drop, Ogre.Drop, Snake.Drop, Gromp.Drop, Dragon.Drop]
