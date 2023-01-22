@@ -186,7 +186,7 @@ dragon_ascii = """
           :   \         ;
 """
 
-gromp_ascii = """                             .-----.
+gromp_ascii = """            .-----.
                             /7  .  (
                            /   .-.  |
                           /   /   \  |

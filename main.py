@@ -1,3 +1,4 @@
+import gc
 class Mob:
     def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP_Drop, Drop, Coin_Drop):
         self.HP = HP
@@ -9,16 +10,19 @@ class Mob:
         self.Drop = Drop
         self.Coin_Drop = Coin_Drop
 class Player:
-    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Level, Coins):
+    def __init__(self, Name, HP, MaxHP, DMG, Speed, EXP, MaxEXP, Level, Coins, Stamina, MaxStamina, Lifesteal):
         self.HP = HP
         self.Name = Name
         self.MaxHP = MaxHP
         self.DMG = DMG
         self.Speed = Speed
         self.EXP = EXP
-        self.MaxExp = MaxEXP
+        self.MaxEXP = MaxEXP
         self.Level = Level
         self.Coins = Coins
+        self.Stamina = Stamina
+        self.MaxStamina = MaxStamina
+        self.Lifesteal = Lifesteal
 class Armor:
     def __init__(self, Durability, Def, Weight, HP):
         self.Durability = Durability
@@ -33,13 +37,40 @@ class Weapon:
         self.Durability = Durability
         self.Speed = Speed
         self.Lifesteal = Lifesteal
-
+class Card:
+    def __init__(self, Name, Description, Stamina, HP, Speed, DMG, Lifesteal, MaxEXP):
+        self.Description = Description
+        self.Stamina = Stamina
+        self.HP = HP
+        self.Speed = Speed
+        self.Lifesteal = Lifesteal
+        self.MaxEXP = MaxEXP
+        self.DMG = DMG
+        self.Name = Name
 #Player classes
-Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 100, 1, 0)
+Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 40, 1, 0, 10, 10, 0)
 
-Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 1, 0)
+Tank = Player("Tank", 30, 30, 2, 1, 0, 100, 1, 0, 5, 5, 0)
 
-Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 1, 0)
+Assasin = Player("Assasin", 20, 20, 4, 4, 0, 100, 1, 0, 20, 20, 0)
+
+#Player Cards
+Lethal_Precision = Card("Lethal Precision", "You gain more precision in your attacks, making your hits land with greater strength", 1, 0, 0, 1, 0, 0)
+Brutal_Momentum = Card("Brutal Momentum", "With every swing you keep your momentum, giving you more speed in your hits", 0, 0, 2, 0, 0, 0)
+Adept = Card("Adept","You gain extra knowledge through battle gaining more experience", 0, 0, 0, 0, 0, -5)
+Swift_Foot = Card("Swift Foot","You feel lighter in your body making your movements much quicker", 1, 0, 2, 0, 0, 0)
+Health_Kit = Card("Health Kit","Health pack for when you need it", 0, 10, 0, 0, 0, 0)
+Cursed_Weapon = Card("Cursed Weapon","You feel that your weapon becomes cursed healing you with each hit, but beware it has consequences...", -5, -5, -3, -1, 2, 20)
+Charged_Return = Card("Charged Return","If your opponent has more speed than you, you deal more damage.", 0, 0, 0, 2, 0, 0)
+Thresher_Claws = Card("Thresher Claws","All your attacks deal 1 more damage", 0, 0, 0, 1, 0, 0)
+Aggressive_Posture = Card("Aggresive Posture","Your attacks slow down your opponent due to your high aggressiveness, not leaving breathing space", 0, 0, 5, 0, 0, 0)
+Warriors_Respite = Card("Warrior's Respite","You feel your body gaining slight strength making you heal  before every battle", 0, 0, 0, 0, 0, 0)
+
+
+Card_List = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
+
+
+
 #Tier 1
 Zweihänder = Weapon("Zweihänder", 8, 2, 15, -4, 0)
 
@@ -104,12 +135,8 @@ Gromp = Mob("Gromp", 70, 70, 10, 4, 0, "Magical Mushroom", 20)
 
 Dragon = Mob("Dragon", 240, 240, 30, 10, 0, "Fire Breath", 50)
 
-mob_list_area_1 = [Slime, Zombie, Goblin]
-
-mob_list_area_2 = [Skeleton, Spider, Wolf]
-
-mob_list_area_3 = [Golem, Gargoyle, Ogre, Snake]
-
 plural_list  = [Goblin.Drop,  Skeleton.Drop, Spider.Drop, Ogre.Drop, Gromp.Drop, Golem.Drop]
 
 inventory_list = []
+
+Total_Moves = []
