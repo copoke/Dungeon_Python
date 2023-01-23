@@ -3,22 +3,35 @@ import random
 from ascii import *
 from main import *
 import sys
+import copy
+
+is_fighting = False
 area = 1 #Ändrar beroende på 
 inventorylist = []
 def clear():
     print(chr(27) + "[2J")
+def input_checker(value1, value2):
+    while True:
+        try:
+            checked_input = int(input(">"))
+            if checked_input >= value1 and checked_input <= value2:
+                return checked_input
+            else:
+                print("Invalid Input")
+                continue
+        except ValueError:
+            print("Invalid Input")
+            continue
 def class_selection():
     global character
-    print("1.Bruiser 2.Tank 3.Assasin")
-    chosen_class = int(input(">"))
+    print("1. Bruiser 2. Tank 3. Assasin")
+    chosen_class = input_checker(1, 3)
     if chosen_class == 1:
         character = Bruiser
     elif chosen_class == 2:
         character = Tank
     elif chosen_class == 3:
         character = Assasin
-    else:
-        print("Invalid Input")
     time.sleep(1)
     print(f"You've chosen {character.Name}")
     return character
@@ -32,7 +45,7 @@ def print_list(list, is_count):
     if is_count == True:
         for x in list:
             print(f"{counter}.{x}")
-def health_bar_calculaton(type):
+def health_bar_calculaton(type, printDamage):
     MAX_DASHES = 40
     convertion = type.MaxHP / MAX_DASHES   
     total_lines =  int(type.HP/convertion)
@@ -40,12 +53,17 @@ def health_bar_calculaton(type):
 
     line_string = "▆" * total_lines
     line_string_health = " " * hp_remaining
+    entire_string = "|" + line_string + line_string_health + "|"
     if type == spawned_mob:
-        print ("|" + line_string + line_string_health + "| -" +  str(character.DMG))
-    elif type == character:
-        print ("|" + line_string + line_string_health + "| -" +  str(spawned_mob.DMG))
+        if is_fighting == True:
+            print(entire_string + "-" + str(character.DMG))
+        else:
+            print(entire_string)
     else:
-        print ("|" + line_string + line_string_health + "|")
+        if is_fighting == True:
+            print(entire_string + "-" + str(spawned_mob.DMG))
+        else:
+            print(entire_string)
 def dialogue_spacing():
     print("----------------------------")
 def EXP():
@@ -62,23 +80,28 @@ def EXP():
         time.sleep(3)
         card_selection()
     else:
-        print(f"You got {spawned_mob.EXP_Drop} exp")
-        print(f"You now have {character.EXP}/{character.MaxEXP} exp.")
+        print(f"+ {spawned_mob.EXP_Drop} exp")
+        dialogue_spacing()
+        print(f"{character.EXP}/{character.MaxEXP} exp")
+        print("\nPress enter to procced")
+        input("")
 def card_selection():
     clear()
-    Card_List = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
+    card_list = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
     randomised_card_list = []
     looping = 0
     while looping < 3:
-        random_card = random.randint(0,len(Card_List) - 1)
+        random_card = random.randint(0,len(card_list) - 1)
         if looping == 0:
-            randomised_card_list.append(Card_List[random_card])
+            randomised_card_list.append(card_list[random_card])
         else:
-            if randomised_card_list.count(Card_List[random_card]) < 1:
-                randomised_card_list.append(Card_List[random_card])
+            if randomised_card_list.count(card_list[random_card]) < 1:
+                randomised_card_list.append(card_list[random_card])
             else:
                 looping -= 1
         looping += 1
+    card_chooser(randomised_card_list, card_list)
+def card_chooser(randomised_card_list, card_list):
     while True:
         print("Pick a card to view in detail:")
         dialogue_spacing()
@@ -94,11 +117,11 @@ def card_selection():
         print(randomised_card_list[choose_card - 1].Description)
         print("\nAre you sure you want to pick this?")
         print("1. Yes 2. No")
-        answer = int(input(">"))
+        answer = input_checker(1, 2)
         if answer == 1:
             if randomised_card_list[choose_card - 1].Name != "Charged Return":
                 add_stats(randomised_card_list, choose_card)
-                Card_List.remove(randomised_card_list[choose_card - 1])
+                card_list.remove(randomised_card_list[choose_card - 1])
                 break
         clear()
 def add_stats(chosen_cards, choose_card):
@@ -112,19 +135,15 @@ def mob_died():
     print(f"{spawned_mob.Name} died")
     dialogue_spacing()
     print(f"+ {spawned_mob.Drop}\n+ {spawned_mob.Coin_Drop} coins")
-    print("\nPress enter to procced")
-    input("")
     EXP()
     inventorylist.append(spawned_mob.Drop)
     character.Coins  += spawned_mob.Coin_Drop
 def mob_spawn_randomizer(moblist):
         global spawned_mob
-        random_spawn = random.randint(0,len(moblist) - 1)
-        spawned_mob = Buffer
-        spawned_mob = moblist[random_spawn]
+        spawned_mob = copy.copy(random.choice(moblist))
         return spawned_mob.Name
 def mob_spawn():
-    mob_list_area_1 = [Slime, Zombie, Goblin]
+    mob_list_area_1 = [Zombie, Slime, Goblin]
 
     mob_list_area_2 = [Skeleton, Spider, Wolf]
 
@@ -138,6 +157,8 @@ def mob_spawn():
         mob_name = mob_spawn_randomizer(mob_list_area_3)
     return mob_name
 def fight_intro():
+    global is_fighting
+    is_fighting = False
     print(fight_ascii)
     time.sleep(1)
     print(f"A {spawned_mob.Name} appears.")
@@ -146,25 +167,28 @@ def fight_intro():
     time.sleep(2)
     clear()
 def fight_menu():
+    global is_fighting
     print(f"{spawned_mob.Name} has {spawned_mob.HP}/{spawned_mob.MaxHP} Health")
-    health_bar_calculaton(spawned_mob)
+    health_bar_calculaton(spawned_mob, is_fighting)
     print(f"You have {character.HP}/{character.MaxHP} Health")
-    health_bar_calculaton(character)
+    health_bar_calculaton(character, is_fighting)
     dialogue_spacing()
-    print("1.Fight? 2.Run? 3.Inventory? 4.Stats?")
-    choosen_action = int(input(">"))
+    print("1.Fight 2.Run 3.Inventory 4.Stats")
+    choosen_action = input_checker(1, 4)
     if choosen_action == 1:
         hit()
+        is_fighting = True
     elif choosen_action == 2:
         run()
+        is_fighting = False
     elif choosen_action == 3:
         inventory()
+        is_fighting = False
     elif choosen_action == 4:
         stats()
         print("\nPress enter to proceed" )
         input("")
-    else:
-        print("Invalid Input")
+        is_fighting = False
     clear()
 def stats():
     clear()
