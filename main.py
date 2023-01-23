@@ -64,10 +64,7 @@ Cursed_Weapon = Card("Cursed Weapon","You feel that your weapon becomes cursed h
 Charged_Return = Card("Charged Return","If your opponent has more speed than you, you deal more damage.", 0, 0, 0, 2, 0, 0)
 Thresher_Claws = Card("Thresher Claws","All your attacks deal 1 more damage", 0, 0, 0, 1, 0, 0)
 Aggressive_Posture = Card("Aggresive Posture","Your attacks slow down your opponent due to your high aggressiveness, not leaving breathing space", 0, 0, 5, 0, 0, 0)
-Warriors_Respite = Card("Warrior's Respite","You feel your body gaining slight strength making you heal  before every battle", 0, 0, 0, 0, 0, 0)
-
-
-Card_List = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
+Warriors_Respite = Card("Warrior's Respite","You feel your body gaining slight strength making you heal before every attack", 0, 0, 0, 0, 0, 0)
 
 
 
@@ -106,6 +103,8 @@ Mjölnir = Weapon("Mjönir", 28, 2, 80, 8, 8)
 
 Lightsaber = Weapon ("Lightsaber", 26, 3, 70, 16, 6)
 
+#Buffer mob
+Buffer = Mob("Buffer", 0, 0, 0, 0, 0, "Buffer", 0)
 
 #Area 1 
 Slime = Mob("Slime", 10, 10, 1, 2, 25, "Gel", 2)

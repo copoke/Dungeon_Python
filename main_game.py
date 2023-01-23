@@ -8,6 +8,7 @@ inventorylist = []
 def clear():
     print(chr(27) + "[2J")
 def class_selection():
+    global character
     print("1.Bruiser 2.Tank 3.Assasin")
     chosen_class = int(input(">"))
     if chosen_class == 1:
@@ -22,7 +23,6 @@ def class_selection():
     print(f"You've chosen {character.Name}")
     return character
 character = class_selection()
-time.sleep(1)
 clear()
 def print_list(list, is_count):
     counter = 1
@@ -50,60 +50,68 @@ def dialogue_spacing():
     print("----------------------------")
 def EXP():
     character.EXP += spawned_mob.EXP_Drop
-    print(f"You got {spawned_mob.EXP_Drop} exp")
     if character.EXP >= character.MaxEXP:
         character.Level += 1
         character.EXP -= character.MaxEXP
-        print("You leveled up!")
-        time.sleep(2)
+        clear()
+        for text in level_up_ascii:
+            print(text)
+            time.sleep(0.4)
+            clear()
+        print(level_up_full_ascii)
+        time.sleep(3)
         card_selection()
-    print(f"You now have {character.EXP}/{character.MaxEXP} exp.")
+    else:
+        print(f"You got {spawned_mob.EXP_Drop} exp")
+        print(f"You now have {character.EXP}/{character.MaxEXP} exp.")
 def card_selection():
     clear()
-    chosen_cards = []
-    answer = 0
+    Card_List = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
+    randomised_card_list = []
     looping = 0
-    dialogue_spacing()
     while looping < 3:
         random_card = random.randint(0,len(Card_List) - 1)
         if looping == 0:
-            chosen_cards.append(Card_List[random_card])
+            randomised_card_list.append(Card_List[random_card])
         else:
-            if chosen_cards.count(Card_List[random_card]) < 1:
-                chosen_cards.append(Card_List[random_card])
+            if randomised_card_list.count(Card_List[random_card]) < 1:
+                randomised_card_list.append(Card_List[random_card])
             else:
                 looping -= 1
         looping += 1
     while True:
+        print("Pick a card to view in detail:")
+        dialogue_spacing()
         counter = 1
-        for card in chosen_cards:
+        for card in randomised_card_list:
             print(f"{counter}.{card.Name}")
             counter += 1
         dialogue_spacing()
         choose_card = int(input(">"))
         clear()
-        print(chosen_cards[choose_card -1].Name)
+        print(randomised_card_list[choose_card -1].Name)
         dialogue_spacing()
-        print(chosen_cards[choose_card - 1].Description)
+        print(randomised_card_list[choose_card - 1].Description)
         print("\nAre you sure you want to pick this?")
         print("1. Yes 2. No")
         answer = int(input(">"))
         if answer == 1:
-            if chosen_cards[choose_card - 1].Name != "Charged Return":
-                add_stats(chosen_cards, choose_card)
-                Card_List.remove(chosen_cards[choose_card - 1])
+            if randomised_card_list[choose_card - 1].Name != "Charged Return":
+                add_stats(randomised_card_list, choose_card)
+                Card_List.remove(randomised_card_list[choose_card - 1])
                 break
         clear()
 def add_stats(chosen_cards, choose_card):
-    character.DMG += chosen_cards[choose_card].DMG
-    character.Stamina += chosen_cards[choose_card].Stamina
-    character.HP += chosen_cards[choose_card].HP
-    character.Speed += chosen_cards[choose_card].Speed
-    character.Lifesteal  += chosen_cards[choose_card].Lifesteal
-    character.MaxEXP  += chosen_cards[choose_card].MaxEXP
+    character.DMG += chosen_cards[choose_card - 1].DMG
+    character.Stamina += chosen_cards[choose_card - 1].Stamina
+    character.HP += chosen_cards[choose_card - 1].HP
+    character.Speed += chosen_cards[choose_card - 1].Speed
+    character.Lifesteal  += chosen_cards[choose_card - 1].Lifesteal
+    character.MaxEXP  += chosen_cards[choose_card - 1].MaxEXP
 def mob_died():
-    print(f"The {spawned_mob.Name} died")
-    print(f"You got {spawned_mob.Drop} and {spawned_mob.Coin_Drop} coins")
+    print(f"{spawned_mob.Name} died")
+    dialogue_spacing()
+    print(f"+ {spawned_mob.Drop}\n+ {spawned_mob.Coin_Drop} coins")
     print("\nPress enter to procced")
     input("")
     EXP()
@@ -112,6 +120,7 @@ def mob_died():
 def mob_spawn_randomizer(moblist):
         global spawned_mob
         random_spawn = random.randint(0,len(moblist) - 1)
+        spawned_mob = Buffer
         spawned_mob = moblist[random_spawn]
         return spawned_mob.Name
 def mob_spawn():
@@ -120,6 +129,7 @@ def mob_spawn():
     mob_list_area_2 = [Skeleton, Spider, Wolf]
 
     mob_list_area_3 = [Golem, Gargoyle, Ogre, Snake]
+
     if area == 1:
         mob_name = mob_spawn_randomizer(mob_list_area_1)
     elif area == 2:
@@ -243,7 +253,4 @@ while True:
     fighting()
 
 
-
-
-
-#Working Damage indicators on health bars
+#Working Damage indicators on health bars, Mob spawning multiple  times, Skills(Temporary damage multiplier), if time avaible status effects
