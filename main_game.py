@@ -101,7 +101,7 @@ def EXP():
     else:
         print(f"+ {spawned_mob.EXP_Drop} exp")
         dialogue_spacing()
-        print(f"{character.EXP}/{character.MaxEXP} exp")
+        print(f"{character.EXP}/{int(character.MaxEXP)} exp")
         print("\nPress enter to procced")
         input("")
 def card_selection():
@@ -297,16 +297,19 @@ def inventory():
     clear()
     print(f"{character.Coins} Coins")
     dialogue_spacing()
+    accounted_items = []
     for owned_item in inventorylist:
         item_counter = inventorylist.count(owned_item)
-        if item_counter > 1:
+        if item_counter > 1 and accounted_items.count(owned_item) < 1:
             plural_checker = plural_list.count(owned_item)
             if plural_checker == 0:
                 print(f"{item_counter} {owned_item}")
+                accounted_items.append(owned_item)
             else:
                 print(f"{item_counter} {owned_item}'s")
-        else:
+        elif accounted_items.count(owned_item) < 1:
             print(f"{item_counter} {owned_item}")
+            accounted_items.append(owned_item)
         item_counter = 0
     dialogue_spacing()
     if len(character_move_list) > 0:
