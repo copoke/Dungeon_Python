@@ -36,7 +36,7 @@ def class_selection():
     print(f"You've chosen {character.Name}")
     return character
 character = class_selection()
-clear()
+clear()   
 def print_list(list, is_count):
     counter = 1
     if is_count == False:
@@ -45,7 +45,7 @@ def print_list(list, is_count):
     if is_count == True:
         for x in list:
             print(f"{counter}.{x}")
-def health_bar_calculaton(type, printDamage):
+def health_bar_calculaton(type):
     MAX_DASHES = 40
     convertion = type.MaxHP / MAX_DASHES   
     total_lines =  int(type.HP/convertion)
@@ -67,11 +67,30 @@ def health_bar_calculaton(type, printDamage):
 def dialogue_spacing():
     print("----------------------------")
 def EXP():
+    global area
+    next_area = 3 #ToDo: Resettar next area, kommer alltid vara 3
     character.EXP += spawned_mob.EXP_Drop
     if character.EXP >= character.MaxEXP:
         character.Level += 1
         character.EXP -= character.MaxEXP
+        character.MaxEXP *= 1.3
+        character.MaxHP += 10
+        character.HP += 5
+        if character.Level >= next_area:
+            for text in new_area_ascii:
+                clear()
+                print(text)
+                time.sleep(0.3)
+                clear()
+            clear()
+            print(full_area_ascii)
+            time.sleep(1)
+            next_area += 3
+            area += 1
+            character.HP = character.MaxHP
+            character.Stamina = character.Stamina
         clear()
+        time.sleep(1)
         for text in level_up_ascii:
             print(text)
             time.sleep(0.4)
@@ -87,16 +106,15 @@ def EXP():
         input("")
 def card_selection():
     clear()
-    card_list = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
     randomised_card_list = []
     looping = 0
     while looping < 3:
-        random_card = random.randint(0,len(card_list) - 1)
+        random_card = random.choice(card_list)
         if looping == 0:
-            randomised_card_list.append(card_list[random_card])
+            randomised_card_list.append(random_card)
         else:
-            if randomised_card_list.count(card_list[random_card]) < 1:
-                randomised_card_list.append(card_list[random_card])
+            if randomised_card_list.count(random_card) < 1:
+                randomised_card_list.append(random_card)
             else:
                 looping -= 1
         looping += 1
@@ -110,27 +128,47 @@ def card_chooser(randomised_card_list, card_list):
             print(f"{counter}.{card.Name}")
             counter += 1
         dialogue_spacing()
-        choose_card = int(input(">"))
+        choose_card = input_checker(1, len(randomised_card_list)) - 1
         clear()
-        print(randomised_card_list[choose_card -1].Name)
+        print(randomised_card_list[choose_card].Name)
         dialogue_spacing()
-        print(randomised_card_list[choose_card - 1].Description)
+        print(randomised_card_list[choose_card].Description)
         print("\nAre you sure you want to pick this?")
         print("1. Yes 2. No")
         answer = input_checker(1, 2)
         if answer == 1:
-            if randomised_card_list[choose_card - 1].Name != "Charged Return":
+            if randomised_card_list[choose_card].Name != "Charged Return":
+                card_list.remove(randomised_card_list[choose_card])
                 add_stats(randomised_card_list, choose_card)
-                card_list.remove(randomised_card_list[choose_card - 1])
                 break
         clear()
 def add_stats(chosen_cards, choose_card):
-    character.DMG += chosen_cards[choose_card - 1].DMG
-    character.Stamina += chosen_cards[choose_card - 1].Stamina
-    character.HP += chosen_cards[choose_card - 1].HP
-    character.Speed += chosen_cards[choose_card - 1].Speed
-    character.Lifesteal  += chosen_cards[choose_card - 1].Lifesteal
-    character.MaxEXP  += chosen_cards[choose_card - 1].MaxEXP
+    character.DMG += chosen_cards[choose_card].DMG
+    character.Stamina += chosen_cards[choose_card].Stamina
+    character.HP += chosen_cards[choose_card].HP
+    character.Speed += chosen_cards[choose_card].Speed
+    character.Lifesteal  += chosen_cards[choose_card].Lifesteal
+    character.MaxEXP  += chosen_cards[choose_card].MaxEXP
+def move_selection():
+    options_move_list = []
+    dialogue_spacing()
+    for move in move_list:
+        if move.Level <= character.Level:
+            options_move_list.append(move)
+    while True:
+        print("Pick a move to view in detail")
+        dialogue_spacing()
+        print_list(options_move_list, True)
+        dialogue_spacing()
+        move_input = input_checker(1, len(options_move_list)) - 1
+        clear()
+        print({options_move_list[move_input].Name})
+        dialogue_spacing()
+        print(f"\n{options_move_list[move_input].Description}")
+        print("Are you sure you want to choose this?")
+        move_input_selection = input_checker(1, 2)
+        if move_input_selection == 1:
+            character_move_list.append(options_move_list[move_input])
 def mob_died():
     print(f"{spawned_mob.Name} died")
     dialogue_spacing()
@@ -163,17 +201,17 @@ def fight_intro():
     time.sleep(1)
     print(f"A {spawned_mob.Name} appears.")
     time.sleep(1)
-    print ("What is your next action?")
-    time.sleep(2)
     clear()
 def fight_menu():
     global is_fighting
+    if character.HP > character.MaxHP:
+        character.HP = character.MaxHP
     print(f"{spawned_mob.Name} has {spawned_mob.HP}/{spawned_mob.MaxHP} Health")
-    health_bar_calculaton(spawned_mob, is_fighting)
+    health_bar_calculaton(spawned_mob)
     print(f"You have {character.HP}/{character.MaxHP} Health")
-    health_bar_calculaton(character, is_fighting)
+    health_bar_calculaton(character)
     dialogue_spacing()
-    print("1.Fight 2.Run 3.Inventory 4.Stats")
+    print("1.Fight? 2.Run? 3.Inventory? 4.Stats?")
     choosen_action = input_checker(1, 4)
     if choosen_action == 1:
         hit()
@@ -186,9 +224,9 @@ def fight_menu():
         is_fighting = False
     elif choosen_action == 4:
         stats()
+        is_fighting = False
         print("\nPress enter to proceed" )
         input("")
-        is_fighting = False
     clear()
 def stats():
     clear()
@@ -219,7 +257,9 @@ def run():
             time.sleep(1)
 def hit():
     death = 0
-    if len(Total_Moves) == 0 or character.Stamina <= 0:
+    if character.Stamina <= character.MaxStamina -2:
+        character.Stamina += 2
+    if len(character_move_list) == 0 or character.Stamina <= 0:
         if character.Speed < spawned_mob.Speed:
             character.HP -= spawned_mob.DMG
             if character.HP <= death:
@@ -227,6 +267,7 @@ def hit():
                 print("You've been killed.")
                 time.sleep(2)
                 sys.exit
+            spawned_mob.HP -= character.DMG
             if spawned_mob.HP <= death:
                 spawned_mob.HP = 0
                 clear()
@@ -244,7 +285,7 @@ def hit():
                 print("You've been killed.")
                 sys.exit
     else:
-        print_list(Total_Moves, True)
+        print_list(character_move_list, True)
 def fighting():
     mob_spawn()
     fight_intro()
@@ -252,6 +293,7 @@ def fighting():
         fight_menu()
 def inventory():
     global inventorylist
+    #Inventory prints multiple of same item
     clear()
     print(f"{character.Coins} Coins")
     dialogue_spacing()
@@ -267,10 +309,10 @@ def inventory():
             print(f"{item_counter} {owned_item}")
         item_counter = 0
     dialogue_spacing()
-    if len(Total_Moves) > 0:
-        print("Your Moves")
+    if len(character_move_list) > 0:
+        print("Your Moves:")
         dialogue_spacing()
-        print_list(Total_Moves, False)
+        print_list(character_move_list, False)
     print("Press enter to proceed")
     input()
 while True:

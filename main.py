@@ -47,6 +47,16 @@ class Card:
         self.MaxEXP = MaxEXP
         self.DMG = DMG
         self.Name = Name
+class Move:
+    def __init__(self, Name, Description, Cost, HP, Speed, DMG, Lifesteal, Level):
+        self.Name = Name
+        self.Description = Description
+        self.Cost = Cost
+        self.HP = HP
+        self.Speed = Speed
+        self.DMG = DMG
+        self.LifeSteal = Lifesteal
+        self.Level = Level
 #Player classes
 Bruiser = Player("Bruiser", 25, 25, 3, 3, 0, 40, 1, 0, 10, 10, 0)
 
@@ -64,14 +74,30 @@ Cursed_Weapon = Card("Cursed Weapon","You feel that your weapon becomes cursed h
 Charged_Return = Card("Charged Return","If your opponent has more speed than you, you deal more damage.", 0, 0, 0, 2, 0, 0)
 Thresher_Claws = Card("Thresher Claws","All your attacks deal 1 more damage", 0, 0, 0, 1, 0, 0)
 Aggressive_Posture = Card("Aggresive Posture","Your attacks slow down your opponent due to your high aggressiveness, not leaving breathing space", 0, 0, 5, 0, 0, 0)
-Warriors_Respite = Card("Warrior's Respite","You feel your body gaining slight strength making you heal before every attack", 0, 0, 0, 0, 0, 0)
+Warriors_Respite = Card("Warrior's Respite","You feel your body gaining slight strength making you heal with every attack", 0, 0, 0, 0, 2, 0)
+Angled_Fighter = Card("Angled Fighter","Your sword hits at better angles hitting different points dealing more damage in exchange for slower attacks with more accuracy",0, 0, -3, 2, 0, 0)
+
+card_list = [Lethal_Precision,  Brutal_Momentum, Adept,  Swift_Foot, Health_Kit, Cursed_Weapon, Charged_Return, Thresher_Claws, Aggressive_Posture, Warriors_Respite]
+
+#Player Moves
+
+Thrust = Move("Thrust","Slash your sword through your opponent", -10, 0, -5, 5, 1, 2)
+Rapid_Slashes = Move("Rapid Slashes","Hit your opponent with a set of quick slashes", -5, 0, 5, 2, 0, 1)
+Meteor_Slash = Move("Meteor Slash", "A slash at the speed and strength as a meteor", -5, 0, 0, 0, 0, 3)
+Supernova = Move("Supernova", "A last resort for whenever you need it the most, has major drawbacks", -20, -10, -5, 100, 0, 8)
+Fireburst = Move("Fireburst", "A magic spell scorching the enemy for damage", -8, 0, 2, 12, 0, 4)
+Heavy_Attack = Move("Heavy Slash", "A slow attack that deals bonus damage", -5, 0, -10, 10, 0, 1)
+Quick_Attack = Move("Quick Attack", "A quick attack making the user gain immense amount of speed at the cost of some damage", -4, 0, 15, -2, 0, 1)
+Blood_Steal = Move("Blood Steal", "Steal the enemys health healing you and dealing damage to the enemy", -10, 10, 0, 20, 0, 6)
+Decimating_Blow= Move("Decimating Blow", "A skull crushing blow, dealing heavy damage", -8, 0, 0, 5, 0, 2)
 
 
-
+move_list = [Thrust, Rapid_Slashes, Meteor_Slash, Supernova, Fireburst, Heavy_Attack, Quick_Attack, Blood_Steal, Decimating_Blow]
+character_move_list = []
 #Tier 1
-Zweihänder = Weapon("Zweihänder", 8, 2, 15, -4, 0)
+Zweihänder = Weapon("Zweihänder", 8, 2, 25, -4, 0)
 
-Scimitar = Weapon("Scimitar", 4, 4, 20, 6, 0)
+Scimitar = Weapon("Scimitar", 4, 4, 25, 6, 0)
 
 Rapier = Weapon("Rapier", 3, 4, 25, 10, 0)
 
@@ -103,9 +129,6 @@ Mjölnir = Weapon("Mjönir", 28, 2, 80, 8, 8)
 
 Lightsaber = Weapon ("Lightsaber", 26, 3, 70, 16, 6)
 
-#Buffer mob
-Buffer = Mob("Buffer", 0, 0, 0, 0, 0, "Buffer", 0)
-
 #Area 1 
 Slime = Mob("Slime", 10, 10, 1, 2, 25, "Gel", 2)
 
@@ -114,28 +137,28 @@ Zombie = Mob("Zombie", 8, 8, 2, 2, 25, "Rotten Flesh", 3)
 Goblin = Mob("Goblin", 6, 6, 2, 2, 25, "Goblin Skull", 4)
 
 #Area 2
-Skeleton = Mob("Skeleton", 35, 35, 6, 5, 25, "Bone", 6)
+Skeleton = Mob("Skeleton", 35, 35, 6, 5, 40, "Bone", 6)
 
-Spider = Mob("Spider", 40, 40, 5, 7, 25, "Spider Eye", 5)
+Spider = Mob("Spider", 40, 40, 5, 7, 40, "Spider Eye", 5)
 
-Wolf = Mob("Wolf", 30, 30, 8, 8, 25, "Fur", 7)
+Wolf = Mob("Wolf", 30, 30, 8, 8, 40, "Fur", 7)
 
 #Area 3
-Golem = Mob("Golem", 100, 100, 15, 1, 25, "Magic Stone", 8)
+Golem = Mob("Golem", 100, 100, 15, 1, 60, "Magic Stone", 8)
 
-Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 25, "Gargoyle Tooth", 9)
+Gargoyle = Mob("Gargoyle", 80, 80, 18, 9, 60, "Gargoyle Tooth", 9)
 
-Ogre = Mob("Ogre", 90, 90, 20, 7, 25, "Broken Club", 12)
+Ogre = Mob("Ogre", 90, 90, 20, 7, 60, "Broken Club", 12)
 
 Snake = Mob("Snake", 5, 90 ,2 , 7, 25, "Venom", 10)
 
 #Bosses
 Gromp = Mob("Gromp", 70, 70, 10, 4, 0, "Magical Mushroom", 20)
 
-Dragon = Mob("Dragon", 240, 240, 30, 10, 0, "Fire Breath", 50)
+Dragon = Mob("Dragon", 240, 240, 25, 10, 0, "Fire Breath", 50)
 
 plural_list  = [Goblin.Drop,  Skeleton.Drop, Spider.Drop, Ogre.Drop, Gromp.Drop, Golem.Drop]
 
 inventory_list = []
 
-Total_Moves = []
+character_move_list = []
