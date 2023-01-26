@@ -103,6 +103,7 @@ def EXP():
         print("\nPress enter to procced")
         input("")
 def new_area():
+    global area
     for text in new_area_ascii:
         clear()
         print(text)
@@ -221,15 +222,14 @@ def fight_menu():
     print(f"You have {character.HP}/{character.MaxHP} Health")
     health_bar_calculaton(character)
     dialogue_spacing()
-    print("1.Fight? 2.Run? 3.Inventory? 4.Stats?")
+    print("1.Fight? 2.Moves? 3.Run? 4.Inventory? 5.Stats?")
     choosen_action = input_checker(1, 5)
     if choosen_action == 1:
         hit()
         is_fighting = True
     elif choosen_action == 2:
         skill()
-        is_fighting = True
-        skill_usage = True
+        clear()
     elif choosen_action == 3:
         run()
         is_fighting = False
@@ -296,17 +296,38 @@ def hit():
             print("You've been killed.")
             sys.exit
 def skill():
-    print("Pick a move to use:")
-    dialogue_spacing()
-    print_names(character_move_list)
-    dialogue_spacing()
-    chosen_move = input_checker(1, len(character_move_list)) - 1
-    player_stat_change(chosen_move)
-    mob_stat_change(chosen_move)
+    if len(character_move_list) > 0:
+        print("Pick a move to use:")
+        dialogue_spacing()
+        print_names(character_move_list)
+        dialogue_spacing()
+        chosen_move = input_checker(1, len(character_move_list)) - 1
+        player_stat_change(chosen_move)
+        mob_stat_change(chosen_move)
+    else:
+        print("You have no moves.")
+        time.sleep(1)
 def player_stat_change(index):
     character.HP += character_move_list[index].HP
     character.Stamina += character_move_list[index].Cost
 def mob_stat_change(index):
+    if character.Speed + character_move_list[index].Speed < spawned_mob.Speed:
+        character.HP -= spawned_mob.DMG
+        if character.HP <= 0:
+            sys.exit
+        spawned_mob.HP -= character.DMG + character_move_list[index].DMG
+        if spawned_mob.HP <= 0:
+            clear()
+            mob_died()
+    else:
+        spawned_mob.HP -= character.DMG + character_move_list[index].DMG
+        if spawned_mob.HP <= 0:
+            clear()
+            mob_died()
+        character.HP -= spawned_mob.DMG
+        if character.HP <= 0:
+            sys.exit
+
 def fighting():
     mob_spawn()
     fight_intro()
@@ -340,6 +361,3 @@ def inventory():
     input()
 while True:
     fighting()
-
-
-#Skills(Temporary damage multiplier)
