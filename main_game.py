@@ -302,14 +302,18 @@ def skill():
         print_names(character_move_list)
         dialogue_spacing()
         chosen_move = input_checker(1, len(character_move_list)) - 1
-        player_stat_change(chosen_move)
-        mob_stat_change(chosen_move)
+        if character.Stamina < character_move_list[chosen_move].Stamina:
+            print("You do not have enough stamina")
+        else:
+            player_stat_change(chosen_move)
+            mob_stat_change(chosen_move)
     else:
         print("You have no moves.")
         time.sleep(1)
 def player_stat_change(index):
     character.HP += character_move_list[index].HP
     character.Stamina += character_move_list[index].Cost
+    character.Lifesteal += character_move_list[index].Lifesteal
 def mob_stat_change(index):
     if character.Speed + character_move_list[index].Speed < spawned_mob.Speed:
         character.HP -= spawned_mob.DMG
@@ -327,7 +331,6 @@ def mob_stat_change(index):
         character.HP -= spawned_mob.DMG
         if character.HP <= 0:
             sys.exit
-
 def fighting():
     mob_spawn()
     fight_intro()
