@@ -10,7 +10,7 @@ area = 1
 inventorylist = []
 def clear():
     print(chr(27) + "[2J")
-def input_checker(value1, value2):
+def input_checker(value1, value2): #Tar upp 2 värden och accepterar input mellan det, returnerar din input
     while True:
         try:
             checked_input = int(input(">"))
@@ -37,12 +37,21 @@ def class_selection():
     return character
 character = class_selection()
 clear() 
-def print_names(list):
+def spawn_boss(boss):
+    global spawned_mob
+    print("You find a stronger sword making ur damage significantly higher, aswell as finding boots on the ground")
+    character.MaxHP += 20
+    character.DMG += 5
+    print("A boss approaches")
+    time.sleep(3)
+    character.HP = character.MaxHP
+    spawned_mob = boss
+def print_names(list): #Printar objects namn istället för själva objectet
     counter = 1
     for object in list:
         print(f"{counter}.{object.Name}")
         counter += 1
-def print_list(list, is_count):
+def print_list(list, is_count): #Printar lista beroende på om du ska räkna eller inte räkna
     counter = 1
     if is_count == False:
         for x in list:
@@ -51,7 +60,7 @@ def print_list(list, is_count):
         for x in list:
             print(f"{counter}.{x}")
             counter += 1
-def health_bar_calculaton(type):
+def health_bar_calculaton(type): #Matte för health bars, använder type för att ta upp antingen character eller spawned_mob instancerna
     MAX_DASHES = 40
     convertion = type.MaxHP / MAX_DASHES   
     total_lines =  int(type.HP/convertion)
@@ -67,12 +76,17 @@ def health_bar_calculaton(type):
             print(entire_string)
     else:
         if is_fighting == True:
-            print(entire_string + "-" + str(spawned_mob.DMG))
+            if character.Lifesteal > spawned_mob.DMG:
+                print(entire_string + "+" + str(character.Lifesteal - spawned_mob.DMG))
+            elif character.Lifesteal == spawned_mob.DMG:
+                print(entire_string)
+            else:
+                print(entire_string + "-" + str(spawned_mob.DMG))
         else:
             print(entire_string)
 def dialogue_spacing():
     print("----------------------------")
-def EXP():
+def EXP(): #Simpel funktion som blir kallad varje gång du dödar ett mob, exp gain
     global area
     character.EXP += spawned_mob.EXP_Drop
     if character.EXP >= character.MaxEXP:
@@ -93,6 +107,7 @@ def EXP():
             clear()
         print(level_up_full_ascii)
         time.sleep(3)
+        character.HP = character.MaxHP
         card_selection()
         time.sleep(0.5)
         move_selection()
@@ -104,6 +119,7 @@ def EXP():
         input("")
 def new_area():
     global area
+    global spawned_mob
     for text in new_area_ascii:
         clear()
         print(text)
@@ -113,13 +129,17 @@ def new_area():
     print(full_area_ascii)
     time.sleep(1)
     area += 1
+    if area == 2:
+       spawn_boss(Gromp)
+    elif area == 3:
+        spawn_boss(Dragon)
     character.HP = character.MaxHP
     character.Stamina = character.Stamina
 def card_selection():
     clear()
     randomised_card_list = []
     looping = 0
-    while looping < 3:
+    while looping < 3: #Randomisar ett kort och adderar det till en lista, kollar om kortet redan finns om det gör det kommer den loopa igen
         random_card = random.choice(card_list)
         if looping == 0:
             randomised_card_list.append(random_card)
@@ -130,7 +150,7 @@ def card_selection():
                 looping -= 1
         looping += 1
     card_chooser(randomised_card_list, card_list)
-def card_chooser(randomised_card_list, card_list):
+def card_chooser(randomised_card_list, card_list): #Visuell meny  för att välja kort
     while True:
         print("Pick a card to view in detail:")
         dialogue_spacing()
@@ -145,10 +165,9 @@ def card_chooser(randomised_card_list, card_list):
         print("1. Yes 2. No")
         answer = input_checker(1, 2)
         if answer == 1:
-            if randomised_card_list[choose_card].Name != "Charged Return":
-                card_list.remove(randomised_card_list[choose_card])
-                add_stats(randomised_card_list, choose_card)
-                break
+            card_list.remove(randomised_card_list[choose_card]) #Tar bort kortet från card_list
+            add_stats(randomised_card_list, choose_card) #Adderar alla stats du får från korten
+            break
         clear()
 def add_stats(chosen_cards, choose_card):
     character.DMG += chosen_cards[choose_card].DMG
@@ -178,6 +197,7 @@ def move_selection():
         move_input_selection = input_checker(1, 2)
         if move_input_selection == 1:
             character_move_list.append(options_move_list[move_input])
+            move_list.remove(options_move_list[move_input])
             break
         clear()
 def mob_died():
@@ -217,6 +237,8 @@ def fight_menu():
     global is_fighting
     if character.HP > character.MaxHP:
         character.HP = character.MaxHP
+    if character.Stamina <= character.Stamina - 2:
+        character.Stamina += 2
     print(f"{spawned_mob.Name} has {spawned_mob.HP}/{spawned_mob.MaxHP} Health")
     health_bar_calculaton(spawned_mob)
     print(f"You have {character.HP}/{character.MaxHP} Health")
@@ -230,6 +252,7 @@ def fight_menu():
     elif choosen_action == 2:
         skill()
         clear()
+        is_fighting = False
     elif choosen_action == 3:
         run()
         is_fighting = False
@@ -295,6 +318,7 @@ def hit():
             time.sleep(1)
             print("You've been killed.")
             sys.exit
+    character.HP += character.Lifesteal
 def skill():
     if len(character_move_list) > 0:
         print("Pick a move to use:")
@@ -302,8 +326,9 @@ def skill():
         print_names(character_move_list)
         dialogue_spacing()
         chosen_move = input_checker(1, len(character_move_list)) - 1
-        if character.Stamina < character_move_list[chosen_move].Stamina:
+        if character.Stamina + character_move_list[chosen_move].Cost < 0:
             print("You do not have enough stamina")
+            time.sleep(1)
         else:
             player_stat_change(chosen_move)
             mob_stat_change(chosen_move)
@@ -332,8 +357,12 @@ def mob_stat_change(index):
         if character.HP <= 0:
             sys.exit
 def fighting():
-    mob_spawn()
-    fight_intro()
+    if character.HP > 0:
+        mob_spawn()
+        fight_intro()
+    else:
+        print("Game Over!")
+        sys.exit
     while character.HP > 0 and spawned_mob.HP > 0:
         fight_menu()
 def inventory():
